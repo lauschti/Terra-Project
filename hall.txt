@@ -1,0 +1,28 @@
+Taster: 
+
+
+
+Modul: Potis
+Potis: (3stck) A1(links),A2(mitte),A3(rechts)
+Taster: (1stck) D2 (bestätigung)
+
+Modul: Kippschalter
+Kippschalter: (4stck) D4, D5, D6, D7
+Taster: (1stck) D3 (bestätigung)
+
+Modul: Tastenfeld
+Tastenfeld: ??
+
+Modul: Taster
+Taster: D8 (links), D9 (rechts)
+
+Modul: Geheimfach
+Kippschalter: D10(on1), D11(on2)
+Taster(versteckt): D12
+
+Modul: Kabel
+Kabel: (5stck) D13, D14, D15, D16, D17
+
+Modul: Timer
+Anschluss: CLK, DIO (SCL,SDA) D20, D21
+
