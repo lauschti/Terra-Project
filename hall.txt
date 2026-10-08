@@ -1,7 +1,3 @@
-Taster: 
-
-
-
 Modul: Potis
 Potis: (3stck) A1(links),A2(mitte),A3(rechts)
 Taster: (1stck) D2 (bestätigung)
@@ -11,7 +7,9 @@ Kippschalter: (4stck) D4, D5, D6, D7
 Taster: (1stck) D3 (bestätigung)
 
 Modul: Tastenfeld
-Tastenfeld: ??
+Tastenfeld: D22-D29
+    Reihe: D22, D23, D24, D25
+    Spalte: D26, D27, D28, D29
 
 Modul: Taster
 Taster: D8 (links), D9 (rechts)
