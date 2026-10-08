@@ -24,7 +24,7 @@ void initKEYPAD()
     }
 }
 
-void intitKIPP()
+void initKIPP()
 {
     for (int i = 0; i<6; i++)
     {
@@ -48,13 +48,38 @@ void initTAST()
     }
 }
 
+bool überprüfKipp()
+{
+    if (digitalRead(kippPins[0]) == LOW)
+    {
+        if (digitalRead(kippPins[1]) == HIGH)
+        {
+            if (digitalRead(kippPins[2]) == LOW)
+            {
+                if (digitalRead(kippPins[3]) == LOW)
+                {
+                    return true;
+                }
+//---------------------------------------
+                else {return false;}
+            }
+//---------------------------------------
+            else {return false;}
+        }
+//---------------------------------------
+        else {return false;}
+    }
+//---------------------------------------
+    else {return false;}
+}
+
 void setup()
 { 
     //setup with minimal user-experience
     Serial.begin(9600);
     initKEYPAD();
     Serial.println("KEYPAD INITIALISIERT");
-    intitKIPP();
+    initKIPP();
     Serial.println("KIPPSCHALTER INITIALISIERT");
     initKABEL();
     Serial.println("KABEL INITIALISIERT");
@@ -62,9 +87,35 @@ void setup()
     Serial.println("TASTER INITIALISIERT");
 }
 
-
-
 void loop()
 {
-    
+    for (int i = 0; i<5; i++)
+    {
+        if (digitalRead(tastPins[i]) == LOW)
+        {
+            switch (i)
+            {
+            case 0:
+                /* code */
+                break;
+            
+            case 1:
+                /* code */
+                break;
+            
+            case 2:
+                /* code */
+                break;
+            
+            case 3:
+                /* code */
+                break;
+            
+            case 4:
+                /* code */
+                break;
+            }
+            delay(200);
+        }
+    }
 }
