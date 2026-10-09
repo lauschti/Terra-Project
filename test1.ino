@@ -12,6 +12,8 @@ bool module4 = false;
 bool module5 = false;
 bool module6 = false;
 
+int fehler = 0;
+
 //-------KEYPAD-PINS-------
 const int rowPins[4] = {22, 23, 24, 25};
 const int colPins[4] = {26, 27, 28, 29};
@@ -77,7 +79,7 @@ bool ueberpruefPoti()
 
 bool ueberpruefGeheim()
 {
-    return (digitalRead(kippPins[4])==LOW && digitalRead(kippPins[5])==HIGH;);
+    return (digitalRead(kippPins[4])==LOW && digitalRead(kippPins[5])==HIGH);
 }
 
 void richtig(int modulnummer)
@@ -87,12 +89,82 @@ void richtig(int modulnummer)
     delay(2000);
     digitalWrite(LEDGRUEN, LOW);
 
-
+    switch (modulnummer)
+    {
+    case 1:
+        module1 = true;
+        break;
+    
+    case 2:
+        module2 = true;
+        break;
+    
+    case 3:
+        module3 = true;
+        break;
+    
+    case 4:
+        module4 = true;
+        break;
+    
+    case 5:
+        module5 = true;
+        break;
+    
+    case 6:
+        module6 = true;
+        break;
+    }
 }
 
 void falsch(int modulnummer)
 {
     //was passiert, wenn fehler
+    digitalWrite(LEDROT, HIGH);
+    delay(2000);
+    digitalWrite(LEDROT, LOW);
+
+    fehler = fehler + 1;
+
+    if (fehler >= 3)
+    {
+        Serial.println("GAME OVER");
+        while (true)
+        {
+            digitalWrite(LEDROT, HIGH);
+            delay(500);
+            digitalWrite(LEDROT, LOW);
+            delay(500);
+        }
+    }
+
+
+    switch (modulnummer)
+    {
+    case 1:
+        module1 = true;
+        break;
+    
+    case 2:
+        module2 = true;
+        break;
+    
+    case 3:
+        module3 = true;
+        break;
+    
+    case 4:
+        module4 = true;
+        break;
+    
+    case 5:
+        module5 = true;
+        break;
+    
+    case 6:
+        module6 = true;
+        break;
+    }
 }
 
 void setup()
@@ -118,44 +190,44 @@ void loop()
             switch (i)
             {
 //---------------------------------------
-            case 0: //D2 (Poti)
+            case 0: //D2 (Poti) Modul 1 (Potentiometer)
                 if (ueberpruefPoti())
                 {
-                    //richtig
+                    richtig(1);
                 }
                 else
                 {
-                    //falsch
+                    falsch(1);
                 }
                 break;
 //---------------------------------------
-            case 1: //D3 (kipp)
+            case 1: //D3 (kipp) Modul 2 (Kippschalter)
                 if (ueberpruefKipp())
                 {
-                    //richtig
+                    richtig(2);
                 }
                 else 
                 {
-                    //falsch
+                    falsch(2);
                 }
                 break;
 //---------------------------------------
-            case 2: //D8
-                //richtig
+            case 2: //D8 Modul 4 (Taster)
+                richtig(4);
                 break;
 //---------------------------------------
-            case 3: //D9
-                //falsch
+            case 3: //D9 Modul 4 (Taster)
+                falsch(4);
                 break;
 //---------------------------------------
-            case 4: //D12
+            case 4: //D12 Modul 5 (geheim)
                 if (ueberpruefGeheim())
                 {
-                    //richtig
+                    richtig(5);
                 }
                 else
                 {
-                    //falsch
+                    falsch(5);
                 }
                 break;
 //---------------------------------------
