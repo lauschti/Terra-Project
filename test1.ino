@@ -23,7 +23,7 @@ void initKEYPAD()
         pinMode(colPins[i], INPUT_PULLUP);
     }
 }
-
+   
 void initKIPP()
 {
     for (int i = 0; i<6; i++)
@@ -48,7 +48,7 @@ void initTAST()
     }
 }
 
-bool überprüfKipp()
+bool ueberpruefKipp()
 {
     if (digitalRead(kippPins[0]) == LOW)
     {
@@ -73,6 +73,41 @@ bool überprüfKipp()
     else {return false;}
 }
 
+bool ueberpruefPoti()
+{
+    if (analogRead(potiPins[0]) >= 20 && analogRead(potiPins[0]) <= 0)
+    {
+        if (analogRead(potiPins[1]) >= 20 && analogRead(potiPins[1]) <= 0)
+        {
+            if (analogRead(potiPins[2]) >= 20 && analogRead(potiPins[2]) <= 0)
+            {
+                return true;
+            }
+//---------------------------------------
+            else {return false;}
+        }
+//---------------------------------------
+        else {return false;}
+    }
+//---------------------------------------
+    else {return false;}
+}
+
+bool ueberpruefGeheim()
+{
+    return (digitalRead(kippPins[4])==LOW && digitalRead(kippPins[5])==HIGH;);
+}
+
+void richtig()
+{
+    // was passiert, wenn richtig entschärft
+}
+
+void falsch()
+{
+    //was passiert, wenn fehler
+}
+
 void setup()
 { 
     //setup with minimal user-experience
@@ -95,27 +130,51 @@ void loop()
         {
             switch (i)
             {
-            case 0:
-                /* code */
+//---------------------------------------
+            case 0: //D2 (Poti)
+                if (ueberpruefPoti())
+                {
+                    //richtig
+                }
+                else
+                {
+                    //falsch
+                }
                 break;
-            
-            case 1:
-                /* code */
+//---------------------------------------
+            case 1: //D3 (kipp)
+                if (ueberpruefKipp())
+                {
+                    //richtig
+                }
+                else 
+                {
+                    //falsch
+                }
                 break;
-            
-            case 2:
-                /* code */
+//---------------------------------------
+            case 2: //D8
+                //richtig
                 break;
-            
-            case 3:
-                /* code */
+//---------------------------------------
+            case 3: //D9
+                //falsch
                 break;
-            
-            case 4:
-                /* code */
+//---------------------------------------
+            case 4: //D12
+                if (ueberpruefGeheim())
+                {
+                    //richtig
+                }
+                else
+                {
+                    //falsch
+                }
                 break;
+//---------------------------------------
             }
             delay(200);
         }
     }
 }
+
