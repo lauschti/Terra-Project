@@ -1,9 +1,9 @@
-const int poti1max = 20;
-const int poti1min = 30;
-const int poti2max = 20;
-const int poti2min = 30;
-const int poti3max = 20;
-const int poti3min = 30;
+const int poti1max = 30;
+const int poti1min = 20;
+const int poti2max = 30;
+const int poti2min = 20;
+const int poti3max = 30;
+const int poti3min = 20;
 
 bool module1 = false;
 bool module2 = false;
