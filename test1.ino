@@ -1,3 +1,16 @@
+const int poti1max = 20;
+const int poti1min = 30;
+const int poti2max = 20;
+const int poti2min = 30;
+const int poti3max = 20;
+const int poti3min = 30;
+
+bool module1 = false;
+bool module2 = false;
+bool module3 = false;
+bool module4 = false;
+bool module5 = false;
+bool module6 = false;
 
 //-------KEYPAD-PINS-------
 const int rowPins[4] = {22, 23, 24, 25};
@@ -14,6 +27,10 @@ const int kabelPins[5] = {13, 14, 15, 16, 17};
 
 //-------Taster-PINS-------
 const int tastPins[5] = {2, 3, 8, 9, 12}; 
+
+//-------LED-PINS-------
+const int LEDROT = 30;
+const int LEDGRUEN = 31;
 
 void initKEYPAD()
 {
@@ -50,47 +67,12 @@ void initTAST()
 
 bool ueberpruefKipp()
 {
-    if (digitalRead(kippPins[0]) == LOW)
-    {
-        if (digitalRead(kippPins[1]) == HIGH)
-        {
-            if (digitalRead(kippPins[2]) == LOW)
-            {
-                if (digitalRead(kippPins[3]) == LOW)
-                {
-                    return true;
-                }
-//---------------------------------------
-                else {return false;}
-            }
-//---------------------------------------
-            else {return false;}
-        }
-//---------------------------------------
-        else {return false;}
-    }
-//---------------------------------------
-    else {return false;}
+    return(digitalRead(kippPins[0]) == LOW && digitalRead(kippPins[1]) == HIGH && digitalRead(kippPins[2]) == LOW && digitalRead(kippPins[3]) == LOW);
 }
 
 bool ueberpruefPoti()
 {
-    if (analogRead(potiPins[0]) >= 20 && analogRead(potiPins[0]) <= 0)
-    {
-        if (analogRead(potiPins[1]) >= 20 && analogRead(potiPins[1]) <= 0)
-        {
-            if (analogRead(potiPins[2]) >= 20 && analogRead(potiPins[2]) <= 0)
-            {
-                return true;
-            }
-//---------------------------------------
-            else {return false;}
-        }
-//---------------------------------------
-        else {return false;}
-    }
-//---------------------------------------
-    else {return false;}
+    return(analogRead(potiPins[0]) >= poti1min && analogRead(potiPins[0]) <= poti1max && analogRead(potiPins[1]) >= poti2min && analogRead(potiPins[1]) <= poti2max && analogRead(potiPins[2]) >= poti3min && analogRead(potiPins[2]) <= poti3max);
 }
 
 bool ueberpruefGeheim()
@@ -98,12 +80,17 @@ bool ueberpruefGeheim()
     return (digitalRead(kippPins[4])==LOW && digitalRead(kippPins[5])==HIGH;);
 }
 
-void richtig()
+void richtig(int modulnummer)
 {
     // was passiert, wenn richtig entschärft
+    digitalWrite(LEDGRUEN, HIGH);
+    delay(2000);
+    digitalWrite(LEDGRUEN, LOW);
+
+
 }
 
-void falsch()
+void falsch(int modulnummer)
 {
     //was passiert, wenn fehler
 }
@@ -177,4 +164,3 @@ void loop()
         }
     }
 }
-
