@@ -1,3 +1,6 @@
+DEMO:
+https://wokwi.com/projects/477422322800369665
+
 💣 Bomb Defusal Game (Work in Progress)
 
 An interactive Arduino puzzle game inspired by Keep Talking and Nobody Explodes. The goal is to defuse various modules by finding the correct combination of switches, potentiometers, and buttons.
