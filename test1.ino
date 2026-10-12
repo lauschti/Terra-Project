@@ -137,34 +137,6 @@ void falsch(int modulnummer)
             delay(500);
         }
     }
-
-
-    switch (modulnummer)
-    {
-    case 1:
-        module1 = true;
-        break;
-    
-    case 2:
-        module2 = true;
-        break;
-    
-    case 3:
-        module3 = true;
-        break;
-    
-    case 4:
-        module4 = true;
-        break;
-    
-    case 5:
-        module5 = true;
-        break;
-    
-    case 6:
-        module6 = true;
-        break;
-    }
 }
 
 void setup()
@@ -191,48 +163,101 @@ void loop()
             {
 //---------------------------------------
             case 0: //D2 (Poti) Modul 1 (Potentiometer)
-                if (ueberpruefPoti())
+                if (!module1)
                 {
-                    richtig(1);
+                    if (ueberpruefPoti())
+                    {
+                        richtig(1);
+                    }
+                    else
+                    {
+                        falsch(1);
+                    }
                 }
-                else
-                {
-                    falsch(1);
-                }
+
                 break;
 //---------------------------------------
             case 1: //D3 (kipp) Modul 2 (Kippschalter)
-                if (ueberpruefKipp())
+                if(!module2)
                 {
-                    richtig(2);
-                }
-                else 
-                {
-                    falsch(2);
-                }
+                    if (ueberpruefKipp())
+                    {
+                        richtig(2);
+                    }
+                    else 
+                    {
+                        falsch(2);
+                    }
+                }   
                 break;
 //---------------------------------------
             case 2: //D8 Modul 4 (Taster)
-                richtig(4);
+                if (!module4) {richtig(4);}
                 break;
 //---------------------------------------
             case 3: //D9 Modul 4 (Taster)
-                falsch(4);
+                if (!module4) {falsch(4);}
                 break;
 //---------------------------------------
             case 4: //D12 Modul 5 (geheim)
-                if (ueberpruefGeheim())
+                if (!module5)
                 {
-                    richtig(5);
-                }
-                else
-                {
-                    falsch(5);
+                    if (ueberpruefGeheim())
+                    {
+                        richtig(5);
+                    }
+                    else
+                    {
+                        falsch(5);
+                    }
                 }
                 break;
 //---------------------------------------
             }
             delay(200);
         }
+    }
+
+    if(!module6) //TODO KABELMODUL
+    {
+        for (int i = 0; i<5; i++)
+        {
+            if (digitalRead(kabelPins[i]) == LOW)
+            {
+                switch (i)
+                {
+                case 0:
+                    /* code */
+                    break;
+
+                case 1:
+                    /* code */
+                    break;
+
+                case 2:
+                    /* code */
+                    break;
+
+                case 3:
+                    /* code */
+                    break;
+
+                case 4:
+                    /* code */
+                    break;
+
+                }
+            }
+        }
+    }
+
+    if (!module3)
+    {
+        // TODO tastenfeld
+    }
+
+    if (module1 && module2 && module3 && module4 && module5 && module6)
+    {
+        // TODO gewonnen
     }
 }
