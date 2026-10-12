@@ -3,6 +3,9 @@
 //TASTENFELD
 //TIMER-SEGMENT
 
+
+#include <Keypad.h>
+
 const int poti1max = 30;
 const int poti1min = 20;
 const int poti2max = 30;
@@ -22,6 +25,21 @@ int fehler = 0;
 bool kabelstate[5] = {true, true, true, true, true}; 
 
 //-------KEYPAD-PINS-------
+const byte ROWS = 4;
+const byte COLS = 4;
+
+char tastenFeld[ROWS][COLS] = {
+  {'1','2','3','A'},
+  {'4','5','6','B'},
+  {'7','8','9','C'},
+  {'*','0','#','D'}
+};
+
+Keypad meinKeypad = Keypad(makeKeymap(tastenFeld), rowPins, colPins, ROWS, COLS);
+
+String passwort = "7355";      // Der Code, der die Bombe entschärft
+String eingabeCode = "";       // Speichert das, was der Spieler tippt
+
 const int rowPins[4] = {22, 23, 24, 25};
 const int colPins[4] = {26, 27, 28, 29};
 
@@ -40,15 +58,6 @@ const int tastPins[5] = {2, 3, 8, 9, 12};
 //-------LED-PINS-------
 const int LEDROT = 30;
 const int LEDGRUEN = 31;
-
-void initKEYPAD()
-{
-    for (int i = 0; i<4; i++)
-    {
-        pinMode(rowPins[i], OUTPUT);
-        pinMode(colPins[i], INPUT_PULLUP);
-    }
-}
    
 void initKIPP()
 {
@@ -151,8 +160,6 @@ void setup()
     Serial.begin(9600);
     pinMode(LEDROT, OUTPUT);
     pinMode(LEDGRUEN, OUTPUT);
-    initKEYPAD();
-    Serial.println("KEYPAD INITIALISIERT");
     initKIPP();
     Serial.println("KIPPSCHALTER INITIALISIERT");
     initKABEL();
@@ -262,9 +269,40 @@ void loop()
         }
     }
 
-    if (!module3)
+if (!module3)
     {
-        // TODO tastenfeld
+        char gedrueckteTaste = meinKeypad.getKey(); // Taste auslesen
+
+        if (gedrueckteTaste) // Wenn eine Taste gedrückt wurde
+        {
+            // Optional: Die *-Taste nutzen, um die Eingabe zu löschen, falls man sich vertippt hat
+            if (gedrueckteTaste == '*') 
+            {
+                eingabeCode = ""; 
+                Serial.println("Eingabe geloescht");
+            }
+            // Wenn es eine normale Zahl/Buchstabe ist, zur Eingabe hinzufügen
+            else 
+            {
+                eingabeCode += gedrueckteTaste; // Taste an den String anhängen
+                Serial.print("Code bisher: ");
+                Serial.println(eingabeCode);
+
+                // Prüfen, ob schon genug Zeichen eingegeben wurden
+                if (eingabeCode.length() == passwort.length()) 
+                {
+                    if (eingabeCode == passwort) 
+                    {
+                        richtig(3);
+                    } 
+                    else 
+                    {
+                        falsch(3);
+                        eingabeCode = ""; // Nach einem falschen Versuch die Eingabe wieder leeren!
+                    }
+                }
+            }
+        }
     }
 
     if (module1 && module2 && module3 && module4 && module5 && module6)
