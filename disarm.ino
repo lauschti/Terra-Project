@@ -3,7 +3,6 @@
 //TASTENFELD
 //TIMER-SEGMENT
 
-
 #include <Keypad.h>
 
 const int poti1max = 30;
@@ -107,29 +106,12 @@ void richtig(int modulnummer)
 
     switch (modulnummer)
     {
-    case 1:
-        module1 = true;
-        break;
-    
-    case 2:
-        module2 = true;
-        break;
-    
-    case 3:
-        module3 = true;
-        break;
-    
-    case 4:
-        module4 = true;
-        break;
-    
-    case 5:
-        module5 = true;
-        break;
-    
-    case 6:
-        module6 = true;
-        break;
+    case 1: module1 = true; break;
+    case 2: module2 = true; break;
+    case 3: module3 = true; break;
+    case 4: module4 = true; break;
+    case 5: module5 = true; break;
+    case 6: module6 = true; break;
     }
 }
 
@@ -307,6 +289,10 @@ if (!module3)
 
     if (module1 && module2 && module3 && module4 && module5 && module6)
     {
-        // TODO gewonnen
+        while (true)
+        {
+            //JAHUIIIII
+        }
+        
     }
 }
