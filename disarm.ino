@@ -1,3 +1,8 @@
+//TODO:
+//GEWONNEN FUNKTION
+//TASTENFELD
+//TIMER-SEGMENT
+
 const int poti1max = 30;
 const int poti1min = 20;
 const int poti2max = 30;
@@ -13,6 +18,8 @@ bool module5 = false;
 bool module6 = false;
 
 int fehler = 0;
+
+bool kabelstate[5] = {true, true, true, true, true}; 
 
 //-------KEYPAD-PINS-------
 const int rowPins[4] = {22, 23, 24, 25};
@@ -141,8 +148,9 @@ void falsch(int modulnummer)
 
 void setup()
 { 
-    //setup with minimal user-experience
     Serial.begin(9600);
+    pinMode(LEDROT, OUTPUT);
+    pinMode(LEDGRUEN, OUTPUT);
     initKEYPAD();
     Serial.println("KEYPAD INITIALISIERT");
     initKIPP();
@@ -218,34 +226,37 @@ void loop()
         }
     }
 
-    if(!module6) //TODO KABELMODUL
+    if(!module6) 
     {
         for (int i = 0; i<5; i++)
         {
-            if (digitalRead(kabelPins[i]) == LOW)
+            if (digitalRead(kabelPins[i]) == HIGH  && kabelstate[i]==true)
             {
                 switch (i)
                 {
                 case 0:
-                    /* code */
+                    richtig(6);
                     break;
 
                 case 1:
-                    /* code */
+                    kabelstate[1] = false;
+                    falsch(6);
                     break;
 
                 case 2:
-                    /* code */
+                    kabelstate[2] = false;
+                    falsch(6);
                     break;
 
                 case 3:
-                    /* code */
+                    kabelstate[3] = false;
+                    falsch(6);
                     break;
 
                 case 4:
-                    /* code */
+                    kabelstate[4] = false;
+                    falsch(6);
                     break;
-
                 }
             }
         }
