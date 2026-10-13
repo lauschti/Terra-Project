@@ -22,5 +22,5 @@ Modul 6: Kabel
 Kabel: (5stck) D13, D14, D15, D16, D17
 
 Modul: Timer
-Anschluss: CLK, DIO (SCL,SDA) D20, D21
+Anschluss: CLK, DIO 32, 33
 

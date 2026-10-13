@@ -1,10 +1,19 @@
 //TODO:
 //GEWONNEN FUNKTION
-//TASTENFELD
-//TIMER-SEGMENT
+//VERLOREN NACH TIMER
 
 #include <Keypad.h>
+#include <TM1637Display.h>
 
+//DSIPLAY:
+const int CLK = 32;
+const int DIO = 33;
+TM1637Display tm(CLK, DIO); 
+int spielzeit = 600; 
+unsigned long lasttick = 0;
+bool doppelpunkt = true;
+
+//POTIS:
 const int poti1max = 30;
 const int poti1min = 20;
 const int poti2max = 30;
@@ -12,6 +21,7 @@ const int poti2min = 20;
 const int poti3max = 30;
 const int poti3min = 20;
 
+//MODULE
 bool module1 = false;
 bool module2 = false;
 bool module3 = false;
@@ -113,6 +123,7 @@ void richtig(int modulnummer)
     case 5: module5 = true; break;
     case 6: module6 = true; break;
     }
+    lasttick = millis();
 }
 
 void falsch(int modulnummer)
@@ -135,6 +146,16 @@ void falsch(int modulnummer)
             delay(500);
         }
     }
+    lasttick = millis();
+}
+
+void updatedisplay(int spielzeit)
+{
+    int minuten = spielzeit / 60;
+    int sekunden = spielzeit % 60;
+    int zahldisplay = minuten * 100 + sekunden;
+    uint8_t doppelpunktHex = doppelpunkt ? 0x40 : 0x00;
+    tm.showNumberDecEx(zahldisplay, doppelpunktHex, true);
 }
 
 void setup()
@@ -148,10 +169,27 @@ void setup()
     Serial.println("KABEL INITIALISIERT");
     initTAST();
     Serial.println("TASTER INITIALISIERT");
+    tm.setBrightness(0x0f);
+    updatedisplay(spielzeit);
 }
 
 void loop()
 {
+    unsigned long aktuelleZeit = millis();
+    if (aktuelleZeit - lasttick >= 1000) 
+    {
+        lasttick = aktuelleZeit;
+        spielzeit = spielzeit - 1;
+        doppelpunkt = !doppelpunkt; 
+        updatedisplay(spielzeit); 
+
+        if (aktuelleZeit<=0)
+        {
+            //verloren :(
+        }
+
+    }
+
     for (int i = 0; i<5; i++)
     {
         if (digitalRead(tastPins[i]) == LOW)
@@ -211,7 +249,6 @@ void loop()
                 break;
 //---------------------------------------
             }
-            delay(200);
         }
     }
 
@@ -293,6 +330,5 @@ if (!module3)
         {
             //JAHUIIIII
         }
-        
     }
 }
