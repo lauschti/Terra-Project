@@ -13,6 +13,9 @@ int spielzeit = 600;
 unsigned long lasttick = 0;
 bool doppelpunkt = true;
 
+unsigned long letzterTastendruck = 0;
+const int ANZEIGEDAUER = 3000;
+
 //POTIS:
 const int poti1max = 30;
 const int poti1min = 20;
@@ -181,9 +184,13 @@ void loop()
         lasttick = aktuelleZeit;
         spielzeit = spielzeit - 1;
         doppelpunkt = !doppelpunkt; 
-        updatedisplay(spielzeit); 
 
-        if (aktuelleZeit<=0)
+        if (aktuelleZeit - letzterTastendruck >= ANZEIGEDAUER)
+        {
+            updatedisplay(spielzeit); 
+        }
+
+        if (spielzeit<=0)
         {
             //verloren :(
         }
@@ -290,35 +297,47 @@ void loop()
 
 if (!module3)
     {
-        char gedrueckteTaste = meinKeypad.getKey(); // Taste auslesen
+        char gedrueckteTaste = meinKeypad.getKey();
 
-        if (gedrueckteTaste) // Wenn eine Taste gedrückt wurde
+        if (gedrueckteTaste) 
         {
-            // Optional: Die *-Taste nutzen, um die Eingabe zu löschen, falls man sich vertippt hat
+            letzterTastendruck = millis(); // Zeitstempel für das Display setzen!
+
             if (gedrueckteTaste == '*') 
             {
                 eingabeCode = ""; 
                 Serial.println("Eingabe geloescht");
+                tm.clear(); // Display kurz leeren als Feedback
             }
-            // Wenn es eine normale Zahl/Buchstabe ist, zur Eingabe hinzufügen
-            else 
+            else if (gedrueckteTaste >= '0' && gedrueckteTaste <= '9') // Nur Zahlen erlauben!
             {
-                eingabeCode += gedrueckteTaste; // Taste an den String anhängen
-                Serial.print("Code bisher: ");
-                Serial.println(eingabeCode);
+                eingabeCode += gedrueckteTaste; 
+                
+                int codeAlsZahl = eingabeCode.toInt(); 
 
-                // Prüfen, ob schon genug Zeichen eingegeben wurden
+                tm.showNumberDecEx(codeAlsZahl, 0x00, false); 
+                // ------------------------------------
+
                 if (eingabeCode.length() == passwort.length()) 
                 {
                     if (eingabeCode == passwort) 
                     {
+                        // Richtig! Kurz blinken lassen als Extra-Feedback
+                        for(int b=0; b<3; b++) { tm.clear(); delay(100); tm.showNumberDecEx(codeAlsZahl, 0x00, false); delay(100); }
                         richtig(3);
                     } 
                     else 
                     {
+                        // Falsch! (Striche anzeigen als Fehler-Feedback auf dem Display)
+                        uint8_t striche[] = { 0x40, 0x40, 0x40, 0x40 }; // Hex für vier mittlere Striche "----"
+                        tm.setSegments(striche);
                         falsch(3);
-                        eingabeCode = ""; // Nach einem falschen Versuch die Eingabe wieder leeren!
+                        eingabeCode = ""; 
                     }
+                    
+                    // Egal ob richtig oder falsch, danach sofort den Timer wieder erzwingen
+                    letzterTastendruck = 0; 
+                    updatedisplay(spielzeit); 
                 }
             }
         }
