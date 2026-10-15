@@ -47,13 +47,13 @@ char tastenFeld[ROWS][COLS] = {
   {'*','0','#','D'}
 };
 
-Keypad meinKeypad = Keypad(makeKeymap(tastenFeld), rowPins, colPins, ROWS, COLS);
-
 String passwort = "7355";      // Der Code, der die Bombe entschärft
 String eingabeCode = "";       // Speichert das, was der Spieler tippt
 
 const int rowPins[4] = {22, 23, 24, 25};
 const int colPins[4] = {26, 27, 28, 29};
+
+Keypad meinKeypad = Keypad(makeKeymap(tastenFeld), rowPins, colPins, ROWS, COLS);
 
 //-------POTI-PINS-------
 const int potiPins[3] = {A1, A2, A3};
@@ -62,7 +62,7 @@ const int potiPins[3] = {A1, A2, A3};
 const int kippPins[6] = {4, 5, 6, 7, 10, 11};
 
 //-------KABEL-PINS-------
-const int kabelPins[5] = {13, 14, 15, 16, 17};
+const int kabelPins[5] = {18, 14, 15, 16, 17};
 
 //-------Taster-PINS-------
 const int tastPins[5] = {2, 3, 8, 9, 12}; 
@@ -192,7 +192,14 @@ void loop()
 
         if (spielzeit<=0)
         {
-            //verloren :(
+            Serial.println("GAME OVER");
+            while (true)
+            {
+                digitalWrite(LEDROT, HIGH);
+                delay(500);
+                digitalWrite(LEDROT, LOW);
+                delay(500);
+            }
         }
 
     }
@@ -345,9 +352,13 @@ if (!module3)
 
     if (module1 && module2 && module3 && module4 && module5 && module6)
     {
+        Serial.println("GEWONNEN!!");
         while (true)
         {
-            //JAHUIIIII
+            digitalWrite(LEDGRUEN, HIGH);
+            delay(500);
+            digitalWrite(LEDGRUEN, LOW);
+            delay(500);
         }
     }
 }
